@@ -166,8 +166,11 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 	public Response intercept(Chain chain) throws IOException {
 	    Request originalRequest = chain.request();
 	    Request.Builder builder = originalRequest.newBuilder();
-	    for (Map.Entry<String, String> header : headersToReplace.entrySet()) {
-		builder.removeHeader(header.getKey()).addHeader(header.getKey(), header.getValue());
+	    // Only add authentication on requests to this host
+	    if (originalRequest.httpUrl().toString().startsWith(baseUrl)) {
+		for (Map.Entry<String, String> header : headersToReplace.entrySet()) {
+		    builder.removeHeader(header.getKey()).addHeader(header.getKey(), header.getValue());
+		}
 	    }
 	    Request requestWithUserAgent = builder.build();
 	    return chain.proceed(requestWithUserAgent);
