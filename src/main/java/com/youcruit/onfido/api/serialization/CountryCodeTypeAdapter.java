@@ -1,6 +1,7 @@
 package com.youcruit.onfido.api.serialization;
 
 import java.lang.reflect.Type;
+import java.util.Locale;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -14,7 +15,10 @@ public class CountryCodeTypeAdapter implements JsonSerializer<CountryCode>, Json
 
     @Override
     public CountryCode deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-	return CountryCode.valueOf(json.getAsString());
+	if (json.isJsonNull()) {
+	    return null;
+	}
+	return CountryCode.getByCode(json.getAsString().toUpperCase(Locale.US));
     }
 
     @Override
