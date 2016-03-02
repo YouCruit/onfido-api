@@ -33,7 +33,7 @@ public class WebhookClient {
 	    throw new IOException("Only https is allowed");
 	}
 	Map<String, Object> obj = new HashMap<>();
-	obj.put("uri", webhookUri);
+	obj.put("url", webhookUri);
 	obj.put("enabled", enabled);
 	obj.put("events", events);
 	URI uri = onfidoHttpClient.pathToUri("applicants");
