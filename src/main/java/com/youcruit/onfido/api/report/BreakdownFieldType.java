@@ -29,15 +29,13 @@ public enum BreakdownFieldType {
     @SerializedName("date_of_birth")
     DATE_OF_BIRTH(IDENTITY, ANTI_MONEY_LAUNDERING, SEX_OFFENDER),
     @SerializedName("mortality")
-    MORTALITY_BREAKDOWN(IDENTITY),
+    MORTALITY_BREAKDOWN(IDENTITY, ANTI_MONEY_LAUNDERING),
     @SerializedName("ssn")
     SSN(IDENTITY),
     @SerializedName("data_integrity")
     DATA_INTEGRITY(DOCUMENT),
     @SerializedName("police_record")
     POLICE_RECORD(DOCUMENT),
-    @SerializedName("mortality")
-    MORTALITY(ANTI_MONEY_LAUNDERING),
     @SerializedName("sanctions_and_politically_exposed_persons")
     SANCTIONS_AND_POLITICALLY_EXPOSED_PERSONS(ANTI_MONEY_LAUNDERING, WATCHLIST),
     @SerializedName("passport")
