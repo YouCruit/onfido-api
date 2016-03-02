@@ -36,7 +36,7 @@ public class WebhookClient {
 	obj.put("url", webhookUri);
 	obj.put("enabled", enabled);
 	obj.put("events", events);
-	URI uri = onfidoHttpClient.pathToUri("applicants");
+	URI uri = onfidoHttpClient.pathToUri("webhooks");
 	return onfidoHttpClient.sync(uri, obj, POST, WebhookRegisterResponse.class);
     }
 
