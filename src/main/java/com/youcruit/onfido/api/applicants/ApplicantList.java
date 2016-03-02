@@ -1,7 +1,20 @@
 package com.youcruit.onfido.api.applicants;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class ApplicantList extends ArrayList<ApplicantResponse> {
-    private static final long serialVersionUID = -6348095590807137804L;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class ApplicantList {
+    @Expose
+    @SerializedName("applicants")
+    private List<ApplicantResponse> applicants;
+
+    public List<ApplicantResponse> getApplicants() {
+	return applicants;
+    }
+
+    public void setApplicants(List<ApplicantResponse> applicants) {
+	this.applicants = applicants;
+    }
 }
