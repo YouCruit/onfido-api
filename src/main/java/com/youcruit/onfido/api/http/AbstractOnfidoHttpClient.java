@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 import javax.annotation.concurrent.ThreadSafe;
@@ -41,6 +42,7 @@ public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
 		.registerTypeAdapter(OnfidoId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(CountryCode.class, new CountryCodeTypeAdapter())
 		.registerTypeAdapter(Calendar.class, new CalendarTypeAdapter())
+		.registerTypeAdapter(GregorianCalendar.class, new CalendarTypeAdapter())
 		.create();
     }
 
