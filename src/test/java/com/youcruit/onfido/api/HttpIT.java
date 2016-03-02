@@ -6,10 +6,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Calendar;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.youcruit.onfido.api.http.FakeHttpClient;
 import com.youcruit.onfido.api.http.OkHttpOnfidoClient;
 import com.youcruit.onfido.api.http.OnfidoHttpClient;
 
@@ -37,12 +39,13 @@ public abstract class HttpIT {
     public OnfidoHttpClient createClient() {
 	String authToken = getPropEnv("ONFIDO_AUTH_TOKEN");
 	if (authToken == null) {
-	    throw new IllegalArgumentException("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken.");
+	    Logger.getLogger(getClass()).error("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken. Going with fake client.");
+	    return new FakeHttpClient();
 	}
 	return createClient(authToken);
     }
 
-    public String getPropEnv(String key) {
+    public static String getPropEnv(String key) {
 	String value = System.getProperties().getProperty(key);
 	if (value == null) {
 	    value = System.getenv(key);
