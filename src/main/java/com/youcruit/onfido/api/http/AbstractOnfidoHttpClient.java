@@ -32,7 +32,7 @@ public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
     protected final String baseUrl;
 
     public AbstractOnfidoHttpClient(Gson gson, String baseUrl) {
-	this.baseUrl = baseUrl == null ? API_BASE_URL : baseUrl;
+	this.baseUrl = baseUrl == null ? API_BASE_WITH_VERSION : baseUrl;
 	this.gson = gson == null ? createGson() : gson;
     }
 
