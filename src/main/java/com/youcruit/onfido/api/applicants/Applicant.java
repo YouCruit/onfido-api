@@ -43,7 +43,7 @@ public class Applicant {
     private List<Address> addresses;
     @Expose
     @SerializedName("id_numbers")
-    private List<String> idNumbers;
+    private List<IdNumber> idNumbers;
 
     public String getTitle() {
 	return title;
@@ -133,11 +133,11 @@ public class Applicant {
 	this.addresses = addresses;
     }
 
-    public List<String> getIdNumbers() {
+    public List<IdNumber> getIdNumbers() {
 	return idNumbers;
     }
 
-    public void setIdNumbers(List<String> idNumbers) {
+    public void setIdNumbers(List<IdNumber> idNumbers) {
 	this.idNumbers = idNumbers;
     }
 
