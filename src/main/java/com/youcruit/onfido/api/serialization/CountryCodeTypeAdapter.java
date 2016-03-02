@@ -1,28 +1,30 @@
 package com.youcruit.onfido.api.serialization;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
 import java.util.Locale;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import com.neovisionaries.i18n.CountryCode;
 
-public class CountryCodeTypeAdapter implements JsonSerializer<CountryCode>, JsonDeserializer<CountryCode> {
+public class CountryCodeTypeAdapter extends TypeAdapter<CountryCode> {
 
     @Override
-    public CountryCode deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-	if (json.isJsonNull()) {
-	    return null;
+    public void write(final JsonWriter out, final CountryCode value) throws IOException {
+	if (value == null) {
+	    out.nullValue();
+	    return;
 	}
-	return CountryCode.getByCode(json.getAsString().toUpperCase(Locale.US));
+	out.value(value.getAlpha3());
     }
 
     @Override
-    public JsonElement serialize(CountryCode src, Type typeOfSrc, JsonSerializationContext context) {
-	return context.serialize(src.getAlpha3());
+    public CountryCode read(final JsonReader in) throws IOException {
+	if (in.peek() == JsonToken.NULL) {
+	    return null;
+	}
+	return CountryCode.getByCode(in.nextString().toUpperCase(Locale.US));
     }
 }

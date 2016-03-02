@@ -43,14 +43,18 @@ public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
     }
 
     protected static Gson createGson() {
-	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+	CountryCodeTypeAdapter countryCodeTypeAdapter = new CountryCodeTypeAdapter();
+	GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+	for (CountryCode countryCode : CountryCode.values()) {
+	    gsonBuilder.registerTypeAdapter(countryCode.getClass(), countryCodeTypeAdapter);
+	}
+	return gsonBuilder
 		.registerTypeAdapter(OnfidoId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(ReportId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(CheckId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(DocumentId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(WebhookId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(ApplicantId.class, new OnfidoIdTypeAdapter())
-		.registerTypeAdapter(CountryCode.class, new CountryCodeTypeAdapter())
 		.registerTypeAdapter(Calendar.class, new CalendarTypeAdapter())
 		.registerTypeAdapter(GregorianCalendar.class, new CalendarTypeAdapter())
 		.create();
