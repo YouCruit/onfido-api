@@ -18,4 +18,37 @@ public class ReportRequest {
     @Expose
     @SerializedName("options")
     private List<OptionField> options;
+
+    public ReportType getReportType() {
+	return reportType;
+    }
+
+    public void setReportType(final ReportType reportType) {
+	this.reportType = reportType;
+    }
+
+    public Variant getVariant() {
+	return variant;
+    }
+
+    public void setVariant(final Variant variant) {
+	this.variant = variant;
+    }
+
+    public List<OptionField> getOptions() {
+	return options;
+    }
+
+    public void setOptions(final List<OptionField> options) {
+	this.options = options;
+    }
+
+    @Override
+    public String toString() {
+	return "ReportRequest{" +
+		"reportType=" + reportType +
+		", variant=" + variant +
+		", options=" + options +
+		'}';
+    }
 }
