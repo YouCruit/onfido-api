@@ -107,7 +107,7 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 	    if (requestBody.getClass() == Part[].class) {
 		MultipartBuilder multipartBuilder = new MultipartBuilder();
 		for (Part part : ((Part[]) requestBody)) {
-		    if (part.getContentType() == null) {
+		    if (part.getContentType() != null) {
 			RequestBody body = RequestBody.create(MediaType.parse(part.getContentType()), part.getData());
 			multipartBuilder.addFormDataPart(part.getName(), part.getName(), body);
 		    } else {

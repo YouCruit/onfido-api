@@ -29,7 +29,7 @@ public class WebhookClient {
     }
 
     public WebhookRegisterResponse register(URI webhookUri, boolean enabled, List<Event> events) throws IOException {
-	if (webhookUri.getScheme().equals("https")) {
+	if (!webhookUri.getScheme().equals("https")) {
 	    throw new IOException("Only https is allowed");
 	}
 	Map<String, Object> obj = new HashMap<>();
