@@ -5,7 +5,6 @@ import static com.youcruit.onfido.api.http.OnfidoHttpClient.Method.POST;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnegative;
@@ -29,10 +28,10 @@ public class ApplicantsClient {
     }
 
     public ApplicantResponse getApplicant(@Nonnull ApplicantId applicantId) throws IOException {
-	return httpClient.sync(httpClient.pathToUri("applicants", applicantId), null, GET, ApplicantResponse.class);
+	return httpClient.sync(httpClient.pathToUri("applicants", applicantId.getId()), null, GET, ApplicantResponse.class);
     }
 
-    public List<ApplicantResponse> listApplicants(@Nullable @Nonnegative Integer page, @Nullable @Nonnegative Integer pageSize) throws IOException {
+    public ApplicantList listApplicants(@Nullable @Nonnegative Integer page, @Nullable @Nonnegative Integer pageSize) throws IOException {
 	Map<String, String> queryParameters = new HashMap<>();
 	if (page != null) {
 	    queryParameters.put("page", String.valueOf(page));
