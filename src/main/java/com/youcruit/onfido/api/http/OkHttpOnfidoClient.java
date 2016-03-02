@@ -21,6 +21,8 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.TlsVersion;
+import com.youcruit.onfido.api.http.exception.ApiError;
+import com.youcruit.onfido.api.http.exception.ApiErrorResponse;
 import com.youcruit.onfido.api.http.exception.ApiException;
 
 import okio.ByteString;
@@ -81,8 +83,17 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 	    }
 	    return getAdapter(responseClass).fromJson(responseJson);
 	} else {
-	    throw new ApiException(responseJson, response.code());
+	    return getException(response, responseJson);
 	}
+    }
+
+    private <V> V getException(Response response, String responseJson) throws ApiException {
+	ApiError apiError = null;
+	try {
+	    apiError = getAdapter(ApiErrorResponse.class).fromJson(responseJson).getError();
+	} catch (Exception ignored) {
+	}
+	throw new ApiException(responseJson, response.code(), apiError);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -139,7 +150,7 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 		    final V responseObject = getAdapter(clazz).fromJson(responseJson);
 		    callback.onSuccess(responseObject);
 		} else {
-		    callback.onError(new ApiException(responseJson, response.code()));
+		    callback.onError(getException(response, responseJson));
 		}
 	    } catch (IOException e) {
 		callback.onError(e);
