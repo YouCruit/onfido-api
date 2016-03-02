@@ -38,7 +38,7 @@ public class Report {
     private Map<BreakdownFieldType, BreakdownField> breakdown;
     @Expose
     @SerializedName("properties")
-    private Map<BreakdownFieldType, Object> properties;
+    private Map<PropertyFieldType, Object> properties;
 
     public ReportId getReportId() {
 	return reportId;
@@ -112,11 +112,11 @@ public class Report {
 	this.breakdown = breakdown;
     }
 
-    public Map<BreakdownFieldType, Object> getProperties() {
+    public Map<PropertyFieldType, Object> getProperties() {
 	return properties;
     }
 
-    public void setProperties(Map<BreakdownFieldType, Object> properties) {
+    public void setProperties(Map<PropertyFieldType, Object> properties) {
 	this.properties = properties;
     }
 }
