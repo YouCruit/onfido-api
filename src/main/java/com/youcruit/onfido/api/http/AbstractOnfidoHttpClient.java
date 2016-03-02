@@ -18,10 +18,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.neovisionaries.i18n.CountryCode;
+import com.youcruit.onfido.api.applicants.ApplicantId;
+import com.youcruit.onfido.api.checks.CheckId;
 import com.youcruit.onfido.api.common.OnfidoId;
+import com.youcruit.onfido.api.documents.DocumentId;
+import com.youcruit.onfido.api.report.ReportId;
 import com.youcruit.onfido.api.serialization.CalendarTypeAdapter;
 import com.youcruit.onfido.api.serialization.CountryCodeTypeAdapter;
 import com.youcruit.onfido.api.serialization.OnfidoIdTypeAdapter;
+import com.youcruit.onfido.api.webhook.WebhookId;
 
 @ThreadSafe
 public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
@@ -40,6 +45,11 @@ public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
     protected static Gson createGson() {
 	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
 		.registerTypeAdapter(OnfidoId.class, new OnfidoIdTypeAdapter())
+		.registerTypeAdapter(ReportId.class, new OnfidoIdTypeAdapter())
+		.registerTypeAdapter(CheckId.class, new OnfidoIdTypeAdapter())
+		.registerTypeAdapter(DocumentId.class, new OnfidoIdTypeAdapter())
+		.registerTypeAdapter(WebhookId.class, new OnfidoIdTypeAdapter())
+		.registerTypeAdapter(ApplicantId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(CountryCode.class, new CountryCodeTypeAdapter())
 		.registerTypeAdapter(Calendar.class, new CalendarTypeAdapter())
 		.registerTypeAdapter(GregorianCalendar.class, new CalendarTypeAdapter())
