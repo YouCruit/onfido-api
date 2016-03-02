@@ -28,7 +28,7 @@ public class ApplicantsClient {
 	return httpClient.sync(httpClient.pathToUri("applicants"), request, POST, ApplicantResponse.class);
     }
 
-    public ApplicantResponse getApplicant(@Nonnull String applicantId) throws IOException {
+    public ApplicantResponse getApplicant(@Nonnull ApplicantId applicantId) throws IOException {
 	return httpClient.sync(httpClient.pathToUri("applicants", applicantId), null, GET, ApplicantResponse.class);
     }
 

@@ -9,7 +9,7 @@ public class ApplicantResponse extends Applicant {
 
     @Expose
     @SerializedName("id")
-    private String id;
+    private ApplicantId id;
     @Expose
     @SerializedName("created_at")
     private Date createdAt;
@@ -17,11 +17,11 @@ public class ApplicantResponse extends Applicant {
     @SerializedName("href")
     private String pathToThis;
 
-    public String getId() {
+    public ApplicantId getId() {
 	return id;
     }
 
-    public void setId(String id) {
+    public void setId(ApplicantId id) {
 	this.id = id;
     }
 
