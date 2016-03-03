@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -29,6 +30,7 @@ import okio.ByteString;
 
 @ThreadSafe
 public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
+    private static final Pattern HOST_MATCHER = Pattern.compile("(.*\\.|)onfido.com");
 
     private final OkHttpClient client;
     private static final MediaType JSON = MediaType.parse("application/json");
@@ -167,7 +169,8 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 	    Request originalRequest = chain.request();
 	    Request.Builder builder = originalRequest.newBuilder();
 	    // Only add authentication on requests to this host
-	    if (originalRequest.httpUrl().toString().startsWith(baseUrl)) {
+	    HttpUrl httpUrl = originalRequest.httpUrl();
+	    if ("https".equals(httpUrl.scheme()) && HOST_MATCHER.matcher(httpUrl.host()).matches()) {
 		for (Map.Entry<String, String> header : headersToReplace.entrySet()) {
 		    builder.removeHeader(header.getKey()).addHeader(header.getKey(), header.getValue());
 		}
