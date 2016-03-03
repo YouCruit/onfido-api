@@ -2,6 +2,7 @@ package com.youcruit.onfido.api.http;
 
 import static java.util.Collections.EMPTY_MAP;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -22,6 +23,9 @@ import com.youcruit.onfido.api.applicants.ApplicantId;
 import com.youcruit.onfido.api.checks.CheckId;
 import com.youcruit.onfido.api.common.OnfidoId;
 import com.youcruit.onfido.api.documents.DocumentId;
+import com.youcruit.onfido.api.http.exception.ApiError;
+import com.youcruit.onfido.api.http.exception.ApiErrorResponse;
+import com.youcruit.onfido.api.http.exception.ApiException;
 import com.youcruit.onfido.api.report.ReportId;
 import com.youcruit.onfido.api.serialization.CalendarTypeAdapter;
 import com.youcruit.onfido.api.serialization.CountryCodeTypeAdapter;
@@ -29,7 +33,7 @@ import com.youcruit.onfido.api.serialization.OnfidoIdTypeAdapter;
 import com.youcruit.onfido.api.webhook.WebhookId;
 
 @ThreadSafe
-public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
+public abstract class AbstractOnfidoHttpClient<R> implements OnfidoHttpClient {
     protected final Logger log = Logger.getLogger(getClass());
 
     public static final Charset UTF8 = Charset.forName("UTF-8");
@@ -130,4 +134,40 @@ public abstract class AbstractOnfidoHttpClient implements OnfidoHttpClient {
 	    }
 	}
     }
+
+    protected <V> V toResponse(URI uri, Class<V> responseClass, long startTime, R response, boolean successful, int code) throws IOException {
+	if (successful) {
+	    if (Void.class.getName().equals(responseClass.getName())) {
+		getResponseStringAndLog(uri, startTime, response);
+		return null;
+	    } else if (byte[].class.getName().equals(responseClass.getName())) {
+		byte[] bytes = getBytes(response);
+		logResponse(uri, startTime, new String(bytes, 0, 20, UTF8) + "...");
+		return (V) bytes;
+	    }
+	    String responseJson = getResponseStringAndLog(uri, startTime, response);
+	    return getAdapter(responseClass).fromJson(responseJson);
+	} else {
+	    String responseJson = getResponseStringAndLog(uri, startTime, response);
+	    return getException(responseJson, code);
+	}
+    }
+
+    protected <V> V getException(String responseJson, int code) throws ApiException {
+	ApiError apiError = null;
+	try {
+	    apiError = getAdapter(ApiErrorResponse.class).fromJson(responseJson).getError();
+	} catch (Exception ignored) {
+	}
+	throw new ApiException(responseJson, code, apiError);
+    }
+
+    protected String getResponseStringAndLog(URI uri, long startTime, R response) throws IOException {
+	String responseJson = getString(response);
+	logResponse(uri, startTime, responseJson);
+	return responseJson;
+    }
+
+    protected abstract String getString(R response) throws IOException;
+    protected abstract byte[] getBytes(R response) throws IOException;
 }

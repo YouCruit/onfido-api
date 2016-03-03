@@ -22,14 +22,11 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.TlsVersion;
-import com.youcruit.onfido.api.http.exception.ApiError;
-import com.youcruit.onfido.api.http.exception.ApiErrorResponse;
-import com.youcruit.onfido.api.http.exception.ApiException;
 
 import okio.ByteString;
 
 @ThreadSafe
-public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
+public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
     private static final Pattern HOST_MATCHER = Pattern.compile("(.*\\.|)onfido.com");
 
     private final OkHttpClient client;
@@ -77,36 +74,17 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 	final Request request = createRequest(uri, requestBody, method);
 	final long startTime = System.currentTimeMillis();
 	final Response response = client.newCall(request).execute();
-	if (response.isSuccessful()) {
-	    if (Void.class.getName().equals(responseClass.getName())) {
-		getResponseString(uri, startTime, response);
-		return null;
-	    } else if (byte[].class.getName().equals(responseClass.getName())) {
-		byte[] bytes = response.body().bytes();
-		logResponse(uri, startTime, new String(bytes, 0, 20, UTF8) + "...");
-		return (V) bytes;
-	    }
-	    String responseJson = getResponseString(uri, startTime, response);
-	    return getAdapter(responseClass).fromJson(responseJson);
-	} else {
-	    String responseJson = getResponseString(uri, startTime, response);
-	    return getException(response, responseJson);
-	}
+	boolean successful = response.isSuccessful();
+	return toResponse(uri, responseClass, startTime, response, successful, response.code());
     }
 
-    private String getResponseString(URI uri, long startTime, Response response) throws IOException {
-	String responseJson = response.body().string();
-	logResponse(uri, startTime, responseJson);
-	return responseJson;
+    public byte[] getBytes(Response response) throws IOException {
+	return response.body().bytes();
     }
 
-    private <V> V getException(Response response, String responseJson) throws ApiException {
-	ApiError apiError = null;
-	try {
-	    apiError = getAdapter(ApiErrorResponse.class).fromJson(responseJson).getError();
-	} catch (Exception ignored) {
-	}
-	throw new ApiException(responseJson, response.code(), apiError);
+    @Override
+    public String getString(Response response) throws IOException {
+	return response.body().string();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -155,16 +133,10 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 
 	@Override
 	public void onResponse(Response response) throws IOException {
-	    String responseJson;
 	    try {
-		responseJson = response.body().string();
-		logResponse(response.request().uri(), startTime, responseJson);
-		if (response.isSuccessful()) {
-		    final V responseObject = getAdapter(clazz).fromJson(responseJson);
-		    callback.onSuccess(responseObject);
-		} else {
-		    callback.onError(getException(response, responseJson));
-		}
+		boolean successful = response.isSuccessful();
+		V responseObject = toResponse(response.request().uri(), clazz, startTime, response, successful, response.code());
+		callback.onSuccess(responseObject);
 	    } catch (IOException e) {
 		callback.onError(e);
 	    } catch (Exception e) {

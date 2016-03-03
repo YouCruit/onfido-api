@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
-public class FakeHttpClient extends AbstractOnfidoHttpClient {
+public class FakeHttpClient extends AbstractOnfidoHttpClient<URI> {
 
     public final List<Map.Entry<URI, String>> responses = new ArrayList<>();
     public int currentPos = 0;
@@ -63,6 +63,16 @@ public class FakeHttpClient extends AbstractOnfidoHttpClient {
 
     @Override
     public <V> V sync(final URI uri, final Object requestBody, final Method method, final Class<V> responseClass) throws IOException {
-	return getAdapter(responseClass).fromJson(getData(uri));
+	return toResponse(uri, responseClass, System.currentTimeMillis(), uri, true, 200);
+    }
+
+    @Override
+    protected String getString(URI response) throws IOException {
+	return getData(response);
+    }
+
+    @Override
+    protected byte[] getBytes(URI response) throws IOException {
+	return getData(response).getBytes(UTF8);
     }
 }
