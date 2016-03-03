@@ -1,13 +1,9 @@
 package com.youcruit.onfido.api;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.TimeZone;
@@ -18,7 +14,6 @@ import org.junit.Test;
 import com.neovisionaries.i18n.CountryCode;
 import com.youcruit.onfido.api.applicants.ApplicantCreationRequest;
 import com.youcruit.onfido.api.applicants.ApplicantId;
-import com.youcruit.onfido.api.applicants.ApplicantList;
 import com.youcruit.onfido.api.applicants.ApplicantResponse;
 import com.youcruit.onfido.api.applicants.ApplicantsClient;
 import com.youcruit.onfido.api.applicants.IdNumber;
@@ -75,20 +70,6 @@ public class CheckTest extends HttpIT {
 
 	Check check = checkClient.createCheck(createCheckRequest, applicantId);
 	return check.getId();
-    }
-
-    private void listApplicants(ApplicantId id) throws IOException {
-	int page = 1;
-	ApplicantList list;
-	do {
-	    list = applicantsClient.listApplicants(page, 20);
-	    for (ApplicantResponse applicantResponse : list.getApplicants()) {
-		if (applicantResponse.getId().equals(id)) {
-		    return;
-		}
-	    }
-	} while (! list.getApplicants().isEmpty());
-	fail("Didn't find the applicant we're supposed to find");
     }
 
     public ApplicantId createApplicant() throws IOException {
