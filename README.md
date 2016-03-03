@@ -1,4 +1,4 @@
-Java API Client for https://onfido.com/
+Java API Client for https://onfido.com/  [![Build Status](https://travis-ci.org/YouCruit/onfido-api.svg?branch=master)](https://travis-ci.org/YouCruit/onfido-api)
 =====================================================
 
 Usage
