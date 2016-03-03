@@ -39,7 +39,7 @@ public abstract class HttpIT {
     public OnfidoHttpClient createClient() {
 	String authToken = getPropEnv("ONFIDO_AUTH_TOKEN");
 	if (authToken == null) {
-	    Logger.getLogger(getClass()).error("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken. Going with fake client.");
+	    Logger.getLogger(getClass()).info("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken. Going with fake client.");
 	    return new FakeHttpClient();
 	}
 	return createClient(authToken);
