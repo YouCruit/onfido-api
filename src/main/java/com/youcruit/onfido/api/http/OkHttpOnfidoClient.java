@@ -77,16 +77,27 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient {
 	final Request request = createRequest(uri, requestBody, method);
 	final long startTime = System.currentTimeMillis();
 	final Response response = client.newCall(request).execute();
-	String responseJson = response.body().string();
-	logResponse(uri, startTime, responseJson);
 	if (response.isSuccessful()) {
 	    if (Void.class.getName().equals(responseClass.getName())) {
+		getResponseString(uri, startTime, response);
 		return null;
+	    } else if (byte[].class.getName().equals(responseClass.getName())) {
+		byte[] bytes = response.body().bytes();
+		logResponse(uri, startTime, new String(bytes, 0, 20, UTF8) + "...");
+		return (V) bytes;
 	    }
+	    String responseJson = getResponseString(uri, startTime, response);
 	    return getAdapter(responseClass).fromJson(responseJson);
 	} else {
+	    String responseJson = getResponseString(uri, startTime, response);
 	    return getException(response, responseJson);
 	}
+    }
+
+    private String getResponseString(URI uri, long startTime, Response response) throws IOException {
+	String responseJson = response.body().string();
+	logResponse(uri, startTime, responseJson);
+	return responseJson;
     }
 
     private <V> V getException(Response response, String responseJson) throws ApiException {
