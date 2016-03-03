@@ -75,6 +75,7 @@ public class ApplicantTest extends HttpIT {
 	applicantCreationRequest.setMiddleName("FB");
 	Calendar aestNow = Calendar.getInstance(TimeZone.getTimeZone("AEST"));
 	aestNow.set(Calendar.YEAR, 1980);
+	aestNow.set(Calendar.DAY_OF_YEAR, 62);
 	applicantCreationRequest.setDateOfBirth(aestNow);
 	applicantCreationRequest.setCountry(CountryCode.US);
 	String email = UUID.randomUUID().toString() + "@example.com";
