@@ -29,4 +29,9 @@ public class ReportClient {
 	URI uri = httpClient.pathToUri("checks", checkId.getId());
 	return httpClient.sync(uri, null, GET, ReportList.class);
     }
+
+    public byte[] getPdfReport(URI downloadUri) throws IOException {
+	URI pdfDownloadUri = URI.create(downloadUri.toString() + ".pdf");
+	return httpClient.sync(pdfDownloadUri, null, GET, byte[].class);
+    }
 }

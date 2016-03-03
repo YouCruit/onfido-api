@@ -1,6 +1,7 @@
 package com.youcruit.onfido.api;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,12 +21,12 @@ import com.youcruit.onfido.api.applicants.IdNumber;
 import com.youcruit.onfido.api.applicants.IdNumberType;
 import com.youcruit.onfido.api.checks.Check;
 import com.youcruit.onfido.api.checks.CheckClient;
-import com.youcruit.onfido.api.checks.CheckId;
 import com.youcruit.onfido.api.checks.CheckType;
 import com.youcruit.onfido.api.checks.CreateCheckRequest;
 import com.youcruit.onfido.api.checks.ReportRequest;
 import com.youcruit.onfido.api.http.FakeHttpClient;
 import com.youcruit.onfido.api.http.OnfidoHttpClient;
+import com.youcruit.onfido.api.report.ReportClient;
 import com.youcruit.onfido.api.report.ReportType;
 
 public class CheckTest extends HttpIT {
@@ -33,12 +34,14 @@ public class CheckTest extends HttpIT {
     private final OnfidoHttpClient client;
     private final ApplicantsClient applicantsClient;
     private final CheckClient checkClient;
+    private final ReportClient reportClient;
 
     public CheckTest(Class<OnfidoHttpClient> httpClientClass) {
 	super(httpClientClass);
 	client = createClient();
 	applicantsClient = new ApplicantsClient(client);
 	checkClient = new CheckClient(client);
+	reportClient = new ReportClient(client);
     }
 
     @Test
@@ -51,11 +54,14 @@ public class CheckTest extends HttpIT {
 
 	// Far from optimal, but since all the tests require creation of a new applicant and doesn't modify it, do them sequentially
 	ApplicantId applicantId = createApplicant();
-	CheckId checkId = createCheck(applicantId);
+	Check check = createCheck(applicantId);
 
+	byte[] pdfReport = reportClient.getPdfReport(check.getDownloadUri());
+	String s = new String(pdfReport, 0, 20, "UTF-8");
+	assertTrue("Not pdf?", s.startsWith("%PDF"));
     }
 
-    private CheckId createCheck(ApplicantId applicantId) throws IOException {
+    private Check createCheck(ApplicantId applicantId) throws IOException {
 	CreateCheckRequest createCheckRequest = new CreateCheckRequest();
 	createCheckRequest.setType(CheckType.EXPRESS);
 
@@ -67,9 +73,7 @@ public class CheckTest extends HttpIT {
 	identity.setReportType(ReportType.IDENTITY);
 	createCheckRequest.setReportRequests(asList(nationalCriminal, countyCriminal, identity));
 
-
-	Check check = checkClient.createCheck(createCheckRequest, applicantId);
-	return check.getId();
+	return checkClient.createCheck(createCheckRequest, applicantId);
     }
 
     public ApplicantId createApplicant() throws IOException {
