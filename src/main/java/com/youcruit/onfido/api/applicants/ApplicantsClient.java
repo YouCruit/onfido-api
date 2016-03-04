@@ -23,7 +23,7 @@ public class ApplicantsClient {
 	this.httpClient = httpClient;
     }
 
-    public ApplicantResponse createApplicant(@Nonnull ApplicantCreationRequest request) throws IOException {
+    public ApplicantResponse createApplicant(@Nonnull Applicant request) throws IOException {
 	return httpClient.sync(httpClient.pathToUri("applicants"), request, POST, ApplicantResponse.class);
     }
 

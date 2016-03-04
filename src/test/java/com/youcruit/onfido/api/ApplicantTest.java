@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.youcruit.onfido.api.applicants.ApplicantCreationRequest;
+import com.youcruit.onfido.api.applicants.Applicant;
 import com.youcruit.onfido.api.applicants.ApplicantId;
 import com.youcruit.onfido.api.applicants.ApplicantList;
 import com.youcruit.onfido.api.applicants.ApplicantResponse;
@@ -69,7 +69,7 @@ public class ApplicantTest extends HttpIT {
     }
 
     public ApplicantId createApplicant() throws IOException {
-	ApplicantCreationRequest applicantCreationRequest = new ApplicantCreationRequest();
+	Applicant applicantCreationRequest = new Applicant();
 	applicantCreationRequest.setFirstName("Foo");
 	applicantCreationRequest.setLastName("Bar");
 	applicantCreationRequest.setMiddleName("FB");
