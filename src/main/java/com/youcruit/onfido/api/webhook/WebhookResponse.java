@@ -23,4 +23,14 @@ public class WebhookResponse {
     @SerializedName("events")
     private List<Event> events;
 
+    @Override
+    public String toString() {
+	return "WebhookResponse{" +
+		"id=" + id +
+		", url=" + url +
+		", enabled=" + enabled +
+		", pathToThis='" + pathToThis + '\'' +
+		", events=" + events +
+		'}';
+    }
 }

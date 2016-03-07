@@ -15,4 +15,11 @@ public class IncomingWebhookRequest {
     public void setPayload(WebhookPayload payload) {
 	this.payload = payload;
     }
+
+    @Override
+    public String toString() {
+	return "IncomingWebhookRequest{" +
+		"payload=" + payload +
+		'}';
+    }
 }

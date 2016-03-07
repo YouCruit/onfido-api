@@ -28,4 +28,12 @@ public class OptionField {
     public void setOptions(List<NestedOptionField> options) {
 	this.options = options;
     }
+
+    @Override
+    public String toString() {
+	return "OptionField{" +
+		"option=" + option +
+		", options=" + options +
+		'}';
+    }
 }

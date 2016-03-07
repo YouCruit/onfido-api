@@ -73,4 +73,16 @@ public class Address {
     public void setStartDate(Calendar startDate) {
 	this.startDate = startDate;
     }
+
+    @Override
+    public String toString() {
+	return "Address{" +
+		"buildingNumber='" + buildingNumber + '\'' +
+		", street='" + street + '\'' +
+		", town='" + town + '\'' +
+		", postcode='" + postcode + '\'' +
+		", country=" + country +
+		", startDate=" + startDate +
+		'}';
+    }
 }

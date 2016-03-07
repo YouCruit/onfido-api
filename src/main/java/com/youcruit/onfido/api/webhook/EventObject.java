@@ -51,4 +51,14 @@ public class EventObject {
     public void setResourceUrl(URL resourceUrl) {
 	this.resourceUrl = resourceUrl;
     }
+
+    @Override
+    public String toString() {
+	return "EventObject{" +
+		"id='" + id + '\'' +
+		", status=" + status +
+		", completedAt=" + completedAt +
+		", resourceUrl=" + resourceUrl +
+		'}';
+    }
 }

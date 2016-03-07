@@ -37,4 +37,13 @@ public class WebhookPayload {
     public void setEventObject(EventObject eventObject) {
 	this.eventObject = eventObject;
     }
+
+    @Override
+    public String toString() {
+	return "WebhookPayload{" +
+		"resourceType=" + resourceType +
+		", action=" + action +
+		", eventObject=" + eventObject +
+		'}';
+    }
 }

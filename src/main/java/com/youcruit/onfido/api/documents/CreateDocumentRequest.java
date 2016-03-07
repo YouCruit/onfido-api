@@ -1,5 +1,7 @@
 package com.youcruit.onfido.api.documents;
 
+import java.util.Arrays;
+
 import com.youcruit.onfido.api.applicants.ApplicantId;
 
 public class CreateDocumentRequest {
@@ -47,5 +49,16 @@ public class CreateDocumentRequest {
 
     public void setFileType(final FileType fileType) {
 	this.fileType = fileType;
+    }
+
+    @Override
+    public String toString() {
+	return "CreateDocumentRequest{" +
+		"documentData=" + Arrays.toString(documentData) +
+		", fileType=" + fileType +
+		", type=" + type +
+		", side=" + side +
+		", applicantId=" + applicantId +
+		'}';
     }
 }

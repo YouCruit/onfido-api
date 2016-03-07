@@ -119,4 +119,20 @@ public class Report {
     public void setProperties(Map<PropertyFieldType, Object> properties) {
 	this.properties = properties;
     }
+
+    @Override
+    public String toString() {
+	return "Report{" +
+		"reportId=" + reportId +
+		", reportType=" + reportType +
+		", createdAt=" + createdAt +
+		", status=" + status +
+		", result=" + result +
+		", variant=" + variant +
+		", options=" + options +
+		", pathToThis='" + pathToThis + '\'' +
+		", breakdown=" + breakdown +
+		", properties=" + properties +
+		'}';
+    }
 }
