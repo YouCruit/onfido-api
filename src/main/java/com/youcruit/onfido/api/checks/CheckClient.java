@@ -17,4 +17,9 @@ public class CheckClient {
 	URI uri = httpClient.pathToUri("applicants", applicantId.getId(), "checks");
 	return httpClient.sync(uri, checkRequest, OnfidoHttpClient.Method.POST, Check.class);
     }
+
+    public Check getCheck(ApplicantId applicantId, CheckId checkId) throws IOException {
+	URI uri = httpClient.pathToUri("applicants", applicantId.getId(), "checks", checkId.getId());
+	return httpClient.sync(uri, null, OnfidoHttpClient.Method.GET, Check.class);
+    }
 }
