@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.youcruit</groupId>
     <artifactId>onfido</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <name>Onfido API</name>
     <url>https://github.com/YouCruit/onfido-api</url>
     <properties>
@@ -21,7 +21,7 @@
 	<connection>scm:git:git@github.com:YouCruit/onfido-api.git</connection>
 	<developerConnection>scm:git:git@github.com:YouCruit/onfido-api.git</developerConnection>
 	<url>https://github.com/YouCruit/onfido-api</url>
-	<tag>HEAD</tag>
+	<tag>onfido-0.0.5</tag>
     </scm>
     <developers>
 	<developer>
