@@ -32,8 +32,7 @@ public enum PropertyFieldType {
     @SerializedName("number_of_bankruptcies")
     NUMBER_OF_BANKRUPCIES(CREDIT),
     @SerializedName("number_of_ivas")
-    NUMBER_OF_IVAS(CREDIT)
-    ;
+    NUMBER_OF_IVAS(CREDIT);
 
     public final List<ReportType> reportTypes;
 

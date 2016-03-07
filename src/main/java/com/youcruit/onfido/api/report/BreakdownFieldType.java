@@ -69,8 +69,7 @@ public enum BreakdownFieldType {
     @SerializedName("drug_test")
     DRUG_TEST_BREAKDOWN(DRUG_TEST),
     @SerializedName("watchlist")
-    WATCH_LIST_BREAKDOWN(WATCHLIST)
-    ;
+    WATCH_LIST_BREAKDOWN(WATCHLIST);
 
     public final List<ReportType> reportTypes;
 
