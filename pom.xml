@@ -67,6 +67,7 @@
 		    <version>2.5.3</version>
 		    <configuration>
 			<releaseProfiles>releasing</releaseProfiles>
+			<autoVersionSubmodules>true</autoVersionSubmodules>
 		    </configuration>
 		</plugin>
 		<plugin>
