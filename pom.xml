@@ -4,7 +4,7 @@
     <groupId>com.youcruit</groupId>
     <artifactId>onfido-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.8</version>
+    <version>0.0.9-SNAPSHOT</version>
     <modules>
 	<module>onfido</module>
 	<module>onfido-test</module>
@@ -26,7 +26,7 @@
 	<connection>scm:git:git@github.com:YouCruit/onfido-api.git</connection>
 	<developerConnection>scm:git:git@github.com:YouCruit/onfido-api.git</developerConnection>
 	<url>https://github.com/YouCruit/onfido-api</url>
-	<tag>onfido-parent-0.0.8</tag>
+	<tag>HEAD</tag>
     </scm>
     <developers>
 	<developer>
