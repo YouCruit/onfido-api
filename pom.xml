@@ -2,8 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.youcruit</groupId>
-    <artifactId>onfido</artifactId>
+    <artifactId>onfido-parent</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.7-SNAPSHOT</version>
+    <modules>
+	<module>onfido</module>
+	<module>onfido-test</module>
+    </modules>
     <name>Onfido API</name>
     <url>https://github.com/YouCruit/onfido-api</url>
     <properties>
@@ -39,18 +44,16 @@
     </distributionManagement>
 
     <build>
-	<plugins>
-	    <plugin>
-		<artifactId>maven-compiler-plugin</artifactId>
-		<version>3.5.1</version>
-		<configuration>
-		    <source>1.8</source>
-		    <target>1.8</target>
-		</configuration>
-	    </plugin>
-	</plugins>
 	<pluginManagement>
 	    <plugins>
+		<plugin>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.5.1</version>
+		    <configuration>
+			<source>1.8</source>
+			<target>1.8</target>
+		    </configuration>
+		</plugin>
 		<plugin>
 		    <artifactId>maven-deploy-plugin</artifactId>
 		    <version>2.8.2</version>
@@ -67,71 +70,19 @@
 		    <version>2.4</version>
 		</plugin>
 		<plugin>
+		    <!-- http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html -->
+		    <!-- http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete/22981151 -->
+		    <groupId>org.apache.maven.plugins</groupId>
 		    <artifactId>maven-javadoc-plugin</artifactId>
 		    <version>2.10.3</version>
+		    <configuration>
+			<additionalparam>-Xdoclint:none</additionalparam>
+		    </configuration>
 		</plugin>
 	    </plugins>
 	</pluginManagement>
     </build>
-    <dependencies>
-	<dependency>
-	    <groupId>junit</groupId>
-	    <artifactId>junit</artifactId>
-	    <version>4.12</version>
-	    <scope>test</scope>
-	</dependency>
-	<dependency>
-	    <groupId>com.google.code.gson</groupId>
-	    <artifactId>gson</artifactId>
-	    <version>2.6.2</version>
-	</dependency>
-	<dependency>
-	    <groupId>com.squareup.okhttp</groupId>
-	    <artifactId>okhttp</artifactId>
-	    <version>2.7.5</version>
-	</dependency>
-	<dependency>
-	    <groupId>log4j</groupId>
-	    <artifactId>log4j</artifactId>
-	    <version>1.2.17</version>
-	</dependency>
-	<dependency>
-	    <groupId>com.neovisionaries</groupId>
-	    <artifactId>nv-i18n</artifactId>
-	    <version>1.18</version>
-	</dependency>
-	<dependency>
-	    <groupId>com.google.code.findbugs</groupId>
-	    <artifactId>jsr305</artifactId>
-	    <version>3.0.1</version>
-	</dependency>
-	<dependency>
-	    <groupId>commons-io</groupId>
-	    <artifactId>commons-io</artifactId>
-	    <version>2.4</version>
-	    <scope>test</scope>
-	</dependency>
-    </dependencies>
     <profiles>
-	<profile>
-	    <id>doclint-java8-disable</id>
-	    <activation>
-		<jdk>[1.8,)</jdk>
-	    </activation>
-	    <build>
-		<plugins>
-		    <plugin>
-			<!-- http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html -->
-			<!-- http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete/22981151 -->
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-javadoc-plugin</artifactId>
-			<configuration>
-			    <additionalparam>-Xdoclint:none</additionalparam>
-			</configuration>
-		    </plugin>
-		</plugins>
-	    </build>
-	</profile>
 	<profile>
 	    <id>releasing</id>
 	    <build>
@@ -163,7 +114,5 @@
 		</plugins>
 	    </build>
 	</profile>
-
-
     </profiles>
 </project>
