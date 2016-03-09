@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import com.youcruit.onfido.api.http.exception.ApiException;
 import com.youcruit.onfido.api.report.ReportId;
 import com.youcruit.onfido.api.serialization.CalendarTypeAdapter;
 import com.youcruit.onfido.api.serialization.CountryCodeTypeAdapter;
+import com.youcruit.onfido.api.serialization.OnfidoDateTypeAdapter;
 import com.youcruit.onfido.api.serialization.OnfidoIdTypeAdapter;
 import com.youcruit.onfido.api.webhook.WebhookId;
 
@@ -61,6 +63,7 @@ public abstract class AbstractOnfidoHttpClient<R> implements OnfidoHttpClient {
 		.registerTypeAdapter(ApplicantId.class, new OnfidoIdTypeAdapter())
 		.registerTypeAdapter(Calendar.class, new CalendarTypeAdapter())
 		.registerTypeAdapter(GregorianCalendar.class, new CalendarTypeAdapter())
+		.registerTypeAdapter(Date.class, new OnfidoDateTypeAdapter())
 		.create();
     }
 

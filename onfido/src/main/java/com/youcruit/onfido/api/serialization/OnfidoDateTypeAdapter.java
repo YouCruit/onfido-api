@@ -1,44 +1,66 @@
 package com.youcruit.onfido.api.serialization;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.ParsePosition;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.TypeAdapter;
+import com.google.gson.internal.bind.util.ISO8601Utils;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
-public class OnfidoDateTypeAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
+public class OnfidoDateTypeAdapter extends TypeAdapter<Date> {
+    private final static Pattern ONFIDO_DATE_STYLE = Pattern.compile("([0-9-]+)[ T]([0-9:]+) ?UTC");
 
-    private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
+    private final DateFormat enUsFormat
+	    = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
+    private final DateFormat localFormat
+	    = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT);
 
     @Override
-    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-	if (json.isJsonNull()) {
+    public Date read(JsonReader in) throws IOException {
+	if (in.peek() == JsonToken.NULL) {
+	    in.nextNull();
 	    return null;
 	}
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US);
+	return deserializeToDate(in.nextString());
+    }
+
+    private synchronized Date deserializeToDate(String json) {
 	try {
-	    return simpleDateFormat.parse(json.getAsString());
+	    return localFormat.parse(json);
+	} catch (ParseException ignored) {
+	}
+	try {
+	    return enUsFormat.parse(json);
+	} catch (ParseException ignored) {
+	}
+	try {
+	    Matcher matcher = ONFIDO_DATE_STYLE.matcher(json);
+	    if (matcher.matches()) {
+		String fixedDate = matcher.group(1) + "T" + matcher.group(2) + "Z";
+		return ISO8601Utils.parse(fixedDate, new ParsePosition(0));
+	    }
+	    return ISO8601Utils.parse(json, new ParsePosition(0));
 	} catch (ParseException e) {
-	    throw new JsonParseException(e);
+	    throw new JsonSyntaxException(json, e);
 	}
     }
 
     @Override
-    public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-	if (src == null) {
-	    return JsonNull.INSTANCE;
+    public synchronized void write(JsonWriter out, Date value) throws IOException {
+	if (value == null) {
+	    out.nullValue();
+	    return;
 	}
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US);
-	simpleDateFormat.setTimeZone(UTC);
-	return context.serialize(simpleDateFormat.format(simpleDateFormat));
+	String dateFormatAsString = enUsFormat.format(value);
+	out.value(dateFormatAsString);
     }
 }
