@@ -1,6 +1,6 @@
 package com.youcruit.onfido.api.webhook;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Date;
 
 import com.google.gson.annotations.Expose;
@@ -18,7 +18,7 @@ public class EventObject {
     private Date completedAt;
     @Expose
     @SerializedName("href")
-    private URL resourceUrl;
+    private URI resourceUrl;
 
     public String getId() {
 	return id;
@@ -44,11 +44,11 @@ public class EventObject {
 	this.completedAt = completedAt;
     }
 
-    public URL getResourceUrl() {
+    public URI getResourceUrl() {
 	return resourceUrl;
     }
 
-    public void setResourceUrl(URL resourceUrl) {
+    public void setResourceUrl(URI resourceUrl) {
 	this.resourceUrl = resourceUrl;
     }
 
