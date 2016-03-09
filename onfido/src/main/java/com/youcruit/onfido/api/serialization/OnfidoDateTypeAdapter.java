@@ -15,7 +15,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class DateTypeAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
+public class OnfidoDateTypeAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
 
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
