@@ -63,7 +63,7 @@ public class WebhookClient {
 	    byte[] rawHmac = mac.doFinal(json);
 
 	    // base64-encode the calculatedSignature
-	    String calculatedSignature = new BigInteger(rawHmac).toString(16);
+	    String calculatedSignature = new BigInteger(1, rawHmac).toString(16);
 	    if (! calculatedSignature.equals(attachedSignature)) {
 		throw new SignatureMismatchException("HMAC mismatch", calculatedSignature, attachedSignature);
 	    }
