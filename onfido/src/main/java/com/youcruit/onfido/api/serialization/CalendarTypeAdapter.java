@@ -32,6 +32,7 @@ public class CalendarTypeAdapter extends TypeAdapter<Calendar> {
     @Override
     public Calendar read(JsonReader in) throws IOException {
 	if (in.peek() == JsonToken.NULL) {
+	    in.nextNull();
 	    return null;
 	}
 	Matcher matcher = DATE_FORMAT.matcher(in.nextString());

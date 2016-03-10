@@ -23,6 +23,7 @@ public class CountryCodeTypeAdapter extends TypeAdapter<CountryCode> {
     @Override
     public CountryCode read(final JsonReader in) throws IOException {
 	if (in.peek() == JsonToken.NULL) {
+	    in.nextNull();
 	    return null;
 	}
 	return CountryCode.getByCode(in.nextString().toUpperCase(Locale.US));
