@@ -3,9 +3,9 @@ package com.youcruit.onfido.api.webhook;
 import com.google.gson.annotations.SerializedName;
 
 public enum Status {
-    @SerializedName("completion")
+    @SerializedName("complete")
     COMPLETED,
-    @SerializedName("withdrawal")
+    @SerializedName("withdrawn")
     WITHDRAWN,
     @SerializedName("in_progress")
     IN_PROGRESS;
