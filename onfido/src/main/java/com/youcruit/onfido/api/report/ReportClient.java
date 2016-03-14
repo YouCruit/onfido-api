@@ -20,11 +20,6 @@ public class ReportClient {
 	return httpClient.sync(uri, null, GET, Report.class);
     }
 
-    public Report getReport(ReportId reportId) throws IOException {
-	URI uri = httpClient.pathToUri("reports", reportId.getId());
-	return httpClient.sync(uri, null, GET, Report.class);
-    }
-
     public ReportList listReports(CheckId checkId) throws IOException {
 	URI uri = httpClient.pathToUri("checks", checkId.getId());
 	return httpClient.sync(uri, null, GET, ReportList.class);
