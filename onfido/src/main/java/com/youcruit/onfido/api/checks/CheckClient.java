@@ -13,9 +13,9 @@ public class CheckClient {
 	this.httpClient = httpClient;
     }
 
-    public Check createCheck(CreateCheckRequest checkRequest, ApplicantId applicantId) throws IOException {
+    public CheckCreationResponse createCheck(CreateCheckRequest checkRequest, ApplicantId applicantId) throws IOException {
 	URI uri = httpClient.pathToUri("applicants", applicantId.getId(), "checks");
-	return httpClient.sync(uri, checkRequest, OnfidoHttpClient.Method.POST, Check.class);
+	return httpClient.sync(uri, checkRequest, OnfidoHttpClient.Method.POST, CheckCreationResponse.class);
     }
 
     public Check getCheck(ApplicantId applicantId, CheckId checkId) throws IOException {

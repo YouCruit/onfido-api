@@ -6,8 +6,9 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.youcruit.onfido.api.report.Report;
 
-public class Check {
+public class CheckCreationResponse {
     @Expose
     @SerializedName("id")
     private CheckId id;
@@ -40,7 +41,7 @@ public class Check {
     private URI formUri;
     @Expose
     @SerializedName("reports")
-    private List<String> reports;
+    private List<Report> reports;
 
     public CheckId getId() {
 	return id;
@@ -122,11 +123,11 @@ public class Check {
 	this.formUri = formUri;
     }
 
-    public List<String> getReports() {
+    public List<Report> getReports() {
 	return reports;
     }
 
-    public void setReports(final List<String> reports) {
+    public void setReports(final List<Report> reports) {
 	this.reports = reports;
     }
 

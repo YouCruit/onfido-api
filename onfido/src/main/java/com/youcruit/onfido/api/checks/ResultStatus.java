@@ -3,8 +3,8 @@ package com.youcruit.onfido.api.checks;
 import com.google.gson.annotations.SerializedName;
 
 public enum ResultStatus {
-    @SerializedName("AWAITING_APPLICANT")
+    @SerializedName("awaiting_applicant")
     AWAITING_DATA,
-    @SerializedName("COMPLETE")
+    @SerializedName("complete")
     COMPLETE;
 }
