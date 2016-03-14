@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public enum ResultStatus {
     @SerializedName("awaiting_applicant")
-    AWAITING_DATA,
+    AWAITING_APPLICANT,
     @SerializedName("complete")
     COMPLETE;
 }

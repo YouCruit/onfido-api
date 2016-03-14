@@ -66,10 +66,10 @@ public class CheckTest extends HttpIT {
 	// Far from optimal, but since all the tests require creation of a new applicant and doesn't modify it, do them sequentially
 	ApplicantId applicantId = createApplicant();
 	CheckCreationResponse check = createCheck(applicantId);
-	assertEquals(ResultStatus.AWAITING_DATA, check.getStatus());
+	assertEquals(ResultStatus.AWAITING_APPLICANT, check.getStatus());
 
 	Check gotCheck = checkClient.getCheck(applicantId, check.getId());
-	assertEquals(ResultStatus.AWAITING_DATA, gotCheck.getStatus());
+	assertEquals(ResultStatus.AWAITING_APPLICANT, gotCheck.getStatus());
 	assertEquals(null, gotCheck.getResult());
 
 	byte[] pdfReport = reportClient.getPdfReport(check.getDownloadUri());
