@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.youcruit.onfido.api.report.Report;
+import com.youcruit.onfido.api.webhook.Status;
 
 public class Check {
     @Expose
@@ -23,7 +24,7 @@ public class Check {
     private CheckType type;
     @Expose
     @SerializedName("status")
-    private ResultStatus status;
+    private Status status;
     @Expose
     @SerializedName("result")
     private Result result;
@@ -75,11 +76,11 @@ public class Check {
 	this.type = type;
     }
 
-    public ResultStatus getStatus() {
+    public Status getStatus() {
 	return status;
     }
 
-    public void setStatus(final ResultStatus status) {
+    public void setStatus(final Status status) {
 	this.status = status;
     }
 
