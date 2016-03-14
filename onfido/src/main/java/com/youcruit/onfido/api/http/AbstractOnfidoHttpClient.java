@@ -147,6 +147,8 @@ public abstract class AbstractOnfidoHttpClient<R> implements OnfidoHttpClient {
 		byte[] bytes = getBytes(response);
 		logResponse(uri, startTime, new String(bytes, 0, 20, UTF8) + "...");
 		return (V) bytes;
+	    } else if (String.class.getName().equals(responseClass.getName())) {
+		return (V) getResponseStringAndLog(uri, startTime, response);
 	    }
 	    String responseJson = getResponseStringAndLog(uri, startTime, response);
 	    return getAdapter(responseClass).fromJson(responseJson);
