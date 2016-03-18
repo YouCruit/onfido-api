@@ -7,10 +7,12 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.youcruit.onfido.api.http.FakeClientRule;
 import com.youcruit.onfido.api.http.FakeHttpClient;
 import com.youcruit.onfido.api.http.OkHttpOnfidoClient;
 import com.youcruit.onfido.api.http.OnfidoHttpClient;
@@ -19,6 +21,9 @@ import com.youcruit.onfido.api.http.OnfidoHttpClient;
 public abstract class HttpIT {
 
     private final Class<? extends OnfidoHttpClient> httpClientClass;
+
+    @Rule
+    public final FakeClientRule fakeClientRule = new FakeClientRule();
 
     @Parameters
     public static Collection<Object[]> data() {
@@ -40,7 +45,9 @@ public abstract class HttpIT {
 	String authToken = getPropEnv("ONFIDO_AUTH_TOKEN");
 	if (authToken == null) {
 	    Logger.getLogger(getClass()).info("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken. Going with fake client.");
-	    return new FakeHttpClient();
+	    FakeHttpClient fakeHttpClient = new FakeHttpClient();
+	    fakeClientRule.setClient(fakeHttpClient);
+	    return fakeHttpClient;
 	}
 	return createClient(authToken);
     }
