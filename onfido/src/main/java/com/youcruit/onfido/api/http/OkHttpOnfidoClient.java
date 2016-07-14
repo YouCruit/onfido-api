@@ -9,20 +9,21 @@ import java.util.regex.Pattern;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.google.gson.Gson;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.CipherSuite;
-import com.squareup.okhttp.ConnectionSpec;
-import com.squareup.okhttp.ConnectionSpec.Builder;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.MultipartBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.TlsVersion;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
+import okhttp3.ConnectionSpec.Builder;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.TlsVersion;
 import okio.ByteString;
 
 @ThreadSafe
@@ -34,7 +35,7 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
     private final Map<String, String> headersToReplace;
 
     private OkHttpClient createOkClient() {
-	OkHttpClient okHttpClient = new OkHttpClient();
+	OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
 	ConnectionSpec sslConnectionSpec = new Builder(ConnectionSpec.MODERN_TLS)
 		.tlsVersions(TlsVersion.TLS_1_2)
 		.cipherSuites(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
@@ -42,9 +43,9 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
 			CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
 
 		.build();
-	okHttpClient.setConnectionSpecs(Collections.singletonList(sslConnectionSpec));
-	okHttpClient.interceptors().add(new HeaderAdder());
-	return okHttpClient;
+	okHttpClient.connectionSpecs(Collections.singletonList(sslConnectionSpec));
+	okHttpClient.addInterceptor(new HeaderAdder());
+	return okHttpClient.build();
     }
 
     public OkHttpOnfidoClient(String authToken) {
@@ -96,7 +97,7 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
 	}
 	if (requestBody != null) {
 	    if (requestBody.getClass() == Part[].class) {
-		MultipartBuilder multipartBuilder = new MultipartBuilder();
+		MultipartBody.Builder multipartBuilder = new MultipartBody.Builder();
 		for (Part part : ((Part[]) requestBody)) {
 		    if (part.getContentType() != null) {
 			RequestBody body = RequestBody.create(MediaType.parse(part.getContentType()), part.getData());
@@ -127,15 +128,15 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
 	}
 
 	@Override
-	public void onFailure(Request request, IOException e) {
+	public void onFailure(Call call, IOException e) {
 	    callback.onError(e);
 	}
 
 	@Override
-	public void onResponse(Response response) throws IOException {
+	public void onResponse(Call call, Response response) throws IOException {
 	    try {
 		boolean successful = response.isSuccessful();
-		V responseObject = toResponse(response.request().uri(), clazz, startTime, response, successful, response.code());
+		V responseObject = toResponse(response.request().url().uri(), clazz, startTime, response, successful, response.code());
 		callback.onSuccess(responseObject);
 	    } catch (IOException e) {
 		callback.onError(e);
@@ -152,7 +153,7 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
 	    Request originalRequest = chain.request();
 	    Request.Builder builder = originalRequest.newBuilder();
 	    // Only add authentication on requests to this host
-	    HttpUrl httpUrl = originalRequest.httpUrl();
+	    HttpUrl httpUrl = originalRequest.url();
 	    if ("https".equals(httpUrl.scheme()) && HOST_MATCHER.matcher(httpUrl.host()).matches()) {
 		for (Map.Entry<String, String> header : headersToReplace.entrySet()) {
 		    builder.removeHeader(header.getKey()).addHeader(header.getKey(), header.getValue());

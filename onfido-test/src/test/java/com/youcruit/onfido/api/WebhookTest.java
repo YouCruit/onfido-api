@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,7 @@ import com.youcruit.onfido.api.webhook.WebhookClient;
 
 public class WebhookTest extends HttpIT {
 
+    public static final Logger LOGGER = LogManager.getLogger(WebhookTest.class);
     private OnfidoHttpClient client;
     private WebhookClient webhookClient;
     private String onfidoWebhookHost;
@@ -33,7 +35,7 @@ public class WebhookTest extends HttpIT {
 	    client = new FakeHttpClient();
 	    onfidoWebhookHost = "https://example.com/foo/";
 	} else {
-	    Logger.getLogger(getClass()).warn("ONFIDO_WEBHOOK_HOST is defined, so not using FakeClient");
+	    LOGGER.warn("ONFIDO_WEBHOOK_HOST is defined, so not using FakeClient");
 	    client = createClient();
 	}
 	webhookClient = new WebhookClient(client);

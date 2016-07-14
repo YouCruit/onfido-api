@@ -14,7 +14,8 @@ import java.util.Map;
 
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,7 +37,7 @@ import com.youcruit.onfido.api.webhook.WebhookId;
 
 @ThreadSafe
 public abstract class AbstractOnfidoHttpClient<R> implements OnfidoHttpClient {
-    protected final Logger log = Logger.getLogger(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
     public static final Charset UTF8 = Charset.forName("UTF-8");
 

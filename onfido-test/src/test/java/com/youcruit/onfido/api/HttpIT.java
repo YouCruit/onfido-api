@@ -6,7 +6,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Calendar;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -17,8 +18,11 @@ import com.youcruit.onfido.api.http.FakeHttpClient;
 import com.youcruit.onfido.api.http.OkHttpOnfidoClient;
 import com.youcruit.onfido.api.http.OnfidoHttpClient;
 
+@SuppressWarnings("deprecation")
 @RunWith(Parameterized.class)
 public abstract class HttpIT {
+
+    private static final Logger LOGGER = LogManager.getLogger(HttpIT.class);
 
     private final Class<? extends OnfidoHttpClient> httpClientClass;
 
@@ -44,7 +48,7 @@ public abstract class HttpIT {
     public OnfidoHttpClient createClient() {
 	String authToken = getPropEnv("ONFIDO_AUTH_TOKEN");
 	if (authToken == null) {
-	    Logger.getLogger(getClass()).info("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken. Going with fake client.");
+	    LOGGER.info("Use environment or property 'ONFIDO_AUTH_TOKEN' to set an authToken. Going with fake client.");
 	    FakeHttpClient fakeHttpClient = new FakeHttpClient();
 	    fakeClientRule.setClient(fakeHttpClient);
 	    return fakeHttpClient;
