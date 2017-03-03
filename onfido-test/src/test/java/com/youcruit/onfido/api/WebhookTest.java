@@ -45,7 +45,7 @@ public class WebhookTest extends HttpIT {
     public void createWebhook() throws IOException {
 	if (client instanceof FakeHttpClient) {
 	    FakeHttpClient fakeClient = (FakeHttpClient) this.client;
-	    fakeClient.addResponse(URI.create("https://api.onfido.com/v1/webhooks"), "{\"id\":\"b6c6c111-ffbb-491d-bc03-0a7bae829a53\",\"url\":\"https://example.com/foo/\",\"enabled\":true,\"token\":\"o4TfmcJ-lwEHLmJJDN9LvyIObJlkiM5l\",\"href\":\"/v1/webhooks/b6c6c111-ffbb-491d-bc03-0a7bae829a53\",\"events\":[\"report completion\",\"report withdrawal\",\"check in progress\",\"check completion\"]}");
+	    fakeClient.addResponse(URI.create("https://api.onfido.com/v2/webhooks"), "{\"id\":\"b6c6c111-ffbb-491d-bc03-0a7bae829a53\",\"url\":\"https://example.com/foo/\",\"enabled\":true,\"token\":\"o4TfmcJ-lwEHLmJJDN9LvyIObJlkiM5l\",\"href\":\"/v2/webhooks/b6c6c111-ffbb-491d-bc03-0a7bae829a53\",\"events\":[\"report completion\",\"report withdrawal\",\"check in progress\",\"check completion\"]}");
 	}
 	webhookClient.register(URI.create(onfidoWebhookHost), true, asList(Event.values()));
     }

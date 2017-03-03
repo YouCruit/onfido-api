@@ -33,7 +33,7 @@ public class ReportTest extends HttpIT {
     public void runAllSequentialTests() throws IOException {
 	if (client instanceof FakeHttpClient) {
 	    FakeHttpClient fakeClient = (FakeHttpClient) client;
-	    fakeClient.addResponse(URI.create("https://api.onfido.com/v1/checks/4cb40a5d-e74a-40b1-9252-15cc39df212f/reports/f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6"), "{\"created_at\":\"2016-03-11T11:56:18Z\",\"href\":\"/v1/checks/4cb40a5d-e74a-40b1-9252-15cc39df212f/reports/f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6\",\"id\":\"f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6\",\"name\":\"national_criminal\",\"properties\":{\"records\":[]},\"result\":\"clear\",\"status\":\"complete\",\"variant\":\"standard\",\"breakdown\":{\"national_criminal\":{\"result\":\"clear\"}}}");
+	    fakeClient.addResponse(URI.create("https://api.onfido.com/v2/checks/4cb40a5d-e74a-40b1-9252-15cc39df212f/reports/f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6"), "{\"created_at\":\"2016-03-11T11:56:18Z\",\"href\":\"/v2/checks/4cb40a5d-e74a-40b1-9252-15cc39df212f/reports/f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6\",\"id\":\"f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6\",\"name\":\"national_criminal\",\"properties\":{\"records\":[]},\"result\":\"clear\",\"status\":\"complete\",\"variant\":\"standard\",\"breakdown\":{\"national_criminal\":{\"result\":\"clear\"}}}");
 	}
 
 	Report report = reportClient.getReport(new CheckId("4cb40a5d-e74a-40b1-9252-15cc39df212f"), new ReportId("f2a664ce-ed8c-49ac-94a4-1b2ad3fa69a6"));
