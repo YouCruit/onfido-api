@@ -68,6 +68,7 @@
 		    <configuration>
 			<releaseProfiles>releasing</releaseProfiles>
 			<autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>onfido-@{version}</tagNameFormat>
 		    </configuration>
 		</plugin>
 		<plugin>
