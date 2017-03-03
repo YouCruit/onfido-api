@@ -12,7 +12,7 @@ import com.google.gson.TypeAdapter;
 public interface OnfidoHttpClient {
 
     String API_BASE_URL = "https://api.onfido.com/";
-    String API_BASE_WITH_VERSION = API_BASE_URL + "v1/";
+    String API_BASE_WITH_VERSION = API_BASE_URL + "v2/";
 
     enum Method {
 	PUT, POST, GET, DELETE
