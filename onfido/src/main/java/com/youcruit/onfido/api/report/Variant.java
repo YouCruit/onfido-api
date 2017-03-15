@@ -8,5 +8,7 @@ public enum Variant {
     @SerializedName("standard")
     STANDARD,
     @SerializedName("enhanced")
-    ENHANCED;
+    ENHANCED,
+    @SerializedName("kyc")
+    KYC;
 }

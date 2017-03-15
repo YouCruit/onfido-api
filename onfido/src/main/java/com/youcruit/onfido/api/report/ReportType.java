@@ -3,6 +3,8 @@ package com.youcruit.onfido.api.report;
 import static com.youcruit.onfido.api.report.Region.EU;
 import static com.youcruit.onfido.api.report.Region.UK;
 import static com.youcruit.onfido.api.report.Region.US;
+import static com.youcruit.onfido.api.report.Variant.KYC;
+import static com.youcruit.onfido.api.report.Variant.STANDARD;
 import static java.util.Arrays.asList;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 public enum ReportType {
     @SerializedName("identity")
-    IDENTITY(UK, US, EU),
+    IDENTITY(KYC, UK, US, EU),
     @SerializedName("document")
     DOCUMENT(UK, US, EU),
     @SerializedName("employment")
@@ -50,8 +52,15 @@ public enum ReportType {
     DRIVING_RECORD(US);
 
     public final List<Region> availableInRegions;
+    public final Variant variant;
 
     ReportType(Region... availableInRegions) {
+	this.variant = STANDARD;
+	this.availableInRegions = asList(availableInRegions);
+    }
+
+    ReportType(Variant variant, Region... availableInRegions) {
+	this.variant = variant;
 	this.availableInRegions = asList(availableInRegions);
     }
 }
