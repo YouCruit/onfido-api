@@ -2,11 +2,13 @@ package com.youcruit.onfido.api.http;
 
 import java.io.IOException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.annotation.concurrent.ThreadSafe;
+import javax.crypto.Cipher;
 
 import com.google.gson.Gson;
 
@@ -42,7 +44,6 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
 			CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
 			CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
 			CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256)
-
 		.build();
 	okHttpClient.connectionSpecs(Collections.singletonList(sslConnectionSpec));
 	okHttpClient.addInterceptor(new HeaderAdder());
@@ -59,6 +60,13 @@ public class OkHttpOnfidoClient extends AbstractOnfidoHttpClient<Response> {
 
     public OkHttpOnfidoClient(OkHttpClient okHttpClient, Gson gson, String apiUrl, String authToken) {
 	super(gson, apiUrl);
+	try {
+	    if (Cipher.getMaxAllowedKeyLength("AES") < 256) {
+		throw new SecurityException("You need to install Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy to use Onfido client");
+	    }
+	} catch (NoSuchAlgorithmException e) {
+	    throw new SecurityException(e);
+	}
 	if (okHttpClient == null) {
 	    this.client = createOkClient();
 	} else {
